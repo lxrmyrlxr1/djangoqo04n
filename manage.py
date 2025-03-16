@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-python manage.py runserver 0.0.0.0:$PORT
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dj2.settings")
     try:
