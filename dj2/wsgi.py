@@ -12,7 +12,6 @@ import os
 from django.core.wsgi import get_wsgi_application
 from fix_collections import collections
 
-from django.core.wsgi import get_wsgi_application
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dj2.settings")
