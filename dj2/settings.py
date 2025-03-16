@@ -16,6 +16,8 @@ from concurrent.futures.thread import ThreadPoolExecutor
 executor = ThreadPoolExecutor(20)
 from util.configread import config_read
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
