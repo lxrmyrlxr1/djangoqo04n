@@ -139,19 +139,19 @@ if dbtype == 'mysql':
         },
     }
 else:
-    print("请使用mysql5.5数据库")
+    print("mysql5.5")
     os._exit(1)
 
 if 'spark' in hasHadoop or 'hive' in hasHadoop:
     jar_fielpath=os.path.join(BASE_DIR,"bin","mysql-connector-java-8.0.32.jar")
     print(jar_fielpath)
     if os.path.exists(jar_fielpath)==False:
-        print('请检查mysql-connector-java-8.0.32.jar文件是否存在')
+        print('mysql-connector-java-8.0.32.jar')
         os._exit(1)
     try:
         spark = SparkSession.builder.config("spark.jars",jar_fielpath).master("local").appName("django").getOrCreate()
     except Exception as e:
-        print('请检查spark配置',e)
+        print('spark',e)
         os._exit(1)
     jdbc_url=f'jdbc:mysql://{host}:{port}/{dbName}?user={user}&password={passwd}&driver=com.mysql.jdbc.Driver'
 
@@ -209,7 +209,7 @@ ALIPAY_APP_ID = ''
 APP_PRIVATE_KEY_STRING = open('{}/util/alipay_key/app_private_2048.txt'.format(BASE_DIR)).read()
 ALIPAY_PUBLIC_KEY_STRING = open('{}/util/alipay_key/alipay_public_2048.txt'.format(BASE_DIR)).read()
 ALIPAY_SIGN_TYPE = 'RSA2'
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['frail-rasia-woshiykexiaoxiaodeshitou-1e9edb32.koyeb.app/', '127.0.0.1']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
