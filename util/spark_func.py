@@ -1,6 +1,7 @@
 # coding: utf-8
 __author__ = 'ila'
 import json
+from pyspark.sql import SparkSession
 from dj2.settings import spark,jdbc_url
 
 def spark_read_mysql(sql,json_filename):
