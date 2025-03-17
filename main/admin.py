@@ -12,9 +12,9 @@ try:
 except:
     pass
 # change title
-admin.site.site_title = schemaName  # 设置页面title
-admin.site.site_header = schemaName  # 设置网站页头
-admin.site.index_title = schemaName  # 设置首页标语
+admin.site.site_title = schemaName  # title
+admin.site.site_header = schemaName  # header
+admin.site.index_title = schemaName  # title
 
 allModels = apps.get_app_config('main').get_models()
 
