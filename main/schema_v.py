@@ -21,7 +21,7 @@ from hdfs.client import Client
 
 def schemaName_cal(request, tableName, columnName):
     '''
-    计算规则接口
+     Calculate the rules interface
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, 'data': []}
@@ -65,7 +65,7 @@ def schemaName_cal(request, tableName, columnName):
 
 def schemaName_file_upload(request):
     '''
-    上传
+    upload
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": "success", "data": {}}
@@ -83,7 +83,6 @@ def schemaName_file_upload(request):
                 for chunk in file.chunks():
                     destination.write(chunk)
             msg["file"] = file_name
-            # 判断是否需要保存为人脸识别基础照片
             req_dict = request.session.get("req_dict")
             type1 = req_dict.get("type", 0)
             print("type1=======>",type1)
@@ -103,7 +102,7 @@ def schemaName_file_upload(request):
 
 def schemaName_file_download(request):
     '''
-    下载
+    download
     '''
     if request.method in ["POST", "GET"]:
         req_dict = request.session.get("req_dict")
@@ -132,7 +131,7 @@ def schemaName_follow_level(request, tableName, columnName, level, parent):
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, 'data': []}
-        # 组合Query参数
+        # Query
         params = {
             "level": level,
             "parent": parent
@@ -146,7 +145,7 @@ def schemaName_follow_level(request, tableName, columnName, level, parent):
                     m,
                     params
                 )
-                # 只需要此列的数据
+                # only this colum
                 for i in data:
                     msg['data'].append(i.get(columnName))
                 break
@@ -155,12 +154,12 @@ def schemaName_follow_level(request, tableName, columnName, level, parent):
 
 def schemaName_follow(request, tableName, columnName):
     '''
-    根据option字段值获取某表的单行记录接口
-    组合columnName和columnValue成dict，传入Query方法
+    Get a single-line record interface for a table based on the option field value
+    Combine columnName and columnValue into dict and pass into the Query method
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, 'data': []}
-        # 组合Query参数
+        # Query
         params = request.session.get('req_dict')
         columnValue = params.get("columnValue")
         params = {columnName: columnValue}
@@ -182,7 +181,7 @@ def schemaName_follow(request, tableName, columnName):
 
 def schemaName_location(request):
     '''
-    定位
+    LOCATION
     :return:
     '''
     if request.method in ["POST", "GET"]:
@@ -202,9 +201,6 @@ def schemaName_location(request):
 
 
 def schemaName_matchface(request):
-    '''
-    baidubce百度人脸识别
-    '''
     if request.method in ["POST", "GET"]:
         try:
             msg = {"code": normal_code}
@@ -227,12 +223,12 @@ def schemaName_matchface(request):
 
             return JsonResponse(msg)
         except:
-            return JsonResponse({"code": 500, "msg": "匹配失败", "score": 0})
+            return JsonResponse({"code": 500, "msg": "wrong", "score": 0})
 
 
 def schemaName_option(request, tableName, columnName):
     '''
-    获取某表的某个字段列表接口
+   Gets a field list interface for a table
     :param request:
     :param tableName:
     :param columnName:
@@ -263,15 +259,15 @@ def schemaName_option(request, tableName, columnName):
 
 def schemaName_remind_tablename_columnname_type(request, tableName, columnName, type)->int:
     '''
-    前台提醒接口（通用接口，不需要登陆）
+   Front desk reminder interface 
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, 'data': []}
-        # 组合Query参数
+        # Query
         params = request.session.get("req_dict")
         remindstart = int(params.get('remindstart')) if params.get('remindstart') != None else None
         remindend = int(params.get('remindend')) if params.get('remindend') != None else None
-        if int(type) == 1:  # 数字
+        if int(type) == 1:  # number
             if remindstart == None and remindend != None:
                 params['remindstart'] = 0
             elif remindstart != None and remindend == None:
@@ -279,7 +275,7 @@ def schemaName_remind_tablename_columnname_type(request, tableName, columnName, 
             elif remindstart == None and remindend == None:
                 params['remindstart'] = 0
                 params['remindend'] = 999999
-        elif int(type) == 2:  # 日期
+        elif int(type) == 2:  # date
             current_time = int(time.time())
             if remindstart == None and remindend != None:
                 starttime = current_time - 60 * 60 * 24 * 365 * 2
@@ -315,7 +311,7 @@ def schemaName_remind_tablename_columnname_type(request, tableName, columnName, 
 
 def schemaName_tablename_remind_columnname_type(request, tableName, columnName, type):
     '''
-    后台提醒接口，判断authSeparate和authTable的权限
+    Background reminder interface to judge the permission of authSeparate and authTable
     '''
     if request.method in ["POST", "GET"]:
         print("schemaName_tablename_remind_columnname_type==============>")
@@ -330,12 +326,11 @@ def schemaName_tablename_remind_columnname_type(request, tableName, columnName, 
             if m.__tablename__ == tableName:
                 tableModel=m
                 break
-        # 获取全部列名
         columns = tableModel.getallcolumn(tableModel, tableModel)
 
-        # 当前login用户所在表
+        # Table of the current login user
         tablename = request.session.get("tablename")
-        # 当列属性authTable有值(某个用户表)[该列的列名必须和该用户表的登陆字段名一致]，则对应的表有个隐藏属性authTable为”是”，那么该用户查看该表信息时，只能查看自己的
+        #If the column attribute authTable has a value (a user table) [the column name of the column must be the same as the login field name of the user table], the corresponding table has a hidden attribute authTable "Yes", then the user can only view his own when viewing the table information
         try:
             __authTables__ =tableModel.__authTables__
         except:
@@ -350,13 +345,13 @@ def schemaName_tablename_remind_columnname_type(request, tableName, columnName, 
                     break
 
 
-        '''__authSeparate__此属性为真，params添加userid，后台只Query个人数据'''
+        '''__authSeparate__true，params add userid'''
         try:
             __authSeparate__ =tableModel.__authSeparate__
         except:
             __authSeparate__ = None
 
-        if __authSeparate__ == "是":
+        if __authSeparate__ == "yes":
             tablename = request.session.get("tablename")
             if tablename != "users" and 'userid' in columns:
                 try:
@@ -365,8 +360,8 @@ def schemaName_tablename_remind_columnname_type(request, tableName, columnName, 
                 except:
                     pass
 
-        # 组合Query参数
-        if int(type) == 1:  # 数字
+        # Query
+        if int(type) == 1:  # number
             if remindstart == None and remindend != None:
                 req_dict['remindstart'] = 0
             elif remindstart != None and remindend == None:
@@ -374,7 +369,7 @@ def schemaName_tablename_remind_columnname_type(request, tableName, columnName, 
             elif remindstart == None and remindend == None:
                 req_dict['remindstart'] = 0
                 req_dict['remindend'] = 999999
-        elif int(type) == 2:  # 日期
+        elif int(type) == 2:  # date
             current_time = int(time.time())
             if remindstart == None and remindend != None:
                 starttime = current_time - 60 * 60 * 24 * 365 * 2
@@ -414,7 +409,7 @@ def schemaName_tablename_remind_columnname_type(request, tableName, columnName, 
 
 def schemaName_sh(request, tableName):
     '''
-    根据主键idRevisetable表的sfsh状态接口
+    And the sfsh status interface according to the primary key idRevisetable table
     '''
     if request.method in ["POST", "GET"]:
         print('tableName=========>', tableName)
@@ -424,18 +419,18 @@ def schemaName_sh(request, tableName):
         for m in allModels:
             if m.__tablename__ == tableName:
 
-                # Query结果
+                # Query
                 data1 = m.getbyid(
                     m,
                     m,
                     req_dict.get('id')
                 )
-                if data1[0].get("sfsh") == '是':
-                    req_dict['sfsh'] = '否'
+                if data1[0].get("sfsh") == 'yes':
+                    req_dict['sfsh'] = 'no'
                 else:
-                    req_dict['sfsh'] = '否'
+                    req_dict['sfsh'] = 'no'
 
-                # 更new
+                # renew
                 res = m.updatebyparams(
                     m,
                     m,
@@ -457,21 +452,6 @@ def schemaName_upload(request, fileName):
 
 
 def schemaName_group_quyu(request, tableName, columnName):
-    '''
-    {
-    "code": 0,
-    "data": [
-        {
-            "total": 2,
-            "shangpinleibie": "水果"
-        },
-        {
-            "total": 1,
-            "shangpinleibie": "蔬菜"
-        }
-    ]
-    }
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": "success", "data": {}}
         allModels = apps.get_app_config('main').get_models()
@@ -493,26 +473,6 @@ def schemaName_group_quyu(request, tableName, columnName):
 
 
 def schemaName_value_quyu(request, tableName, xColumnName, yColumnName):
-    '''
-    按值 total接口,
-    {
-    "code": 0,
-    "data": [
-        {
-            "total": 10.0,
-            "shangpinleibie": "aa"
-        },
-        {
-            "total": 20.0,
-            "shangpinleibie": "bb"
-        },
-        {
-            "total": 15.0,
-            "shangpinleibie": "cc"
-        }
-    ]
-}
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": "success", "data": {}}
         allModels = apps.get_app_config('main').get_models()
@@ -544,13 +504,13 @@ def schemaName_value_riqitj(request, tableName, xColumnName, yColumnName, timeSt
                     if request.session.get("tablename") == item[1]:
                         where = where + " and " + item[0] + " = '" +  request.session.get("params").get(item[0]) + "' "
         sql = ''
-        if timeStatType == '日':
+        if timeStatType == 'day':
             sql = "SELECT DATE_FORMAT({0}, '%Y-%m-%d') {0}, sum({1}) total FROM {3} {2} GROUP BY DATE_FORMAT({0}, '%Y-%m-%d')".format(xColumnName, yColumnName, where, tableName, '%Y-%m-%d')
 
-        if timeStatType == '月':
+        if timeStatType == 'month':
             sql = "SELECT DATE_FORMAT({0}, '%Y-%m') {0}, sum({1}) total FROM {3} {2} GROUP BY DATE_FORMAT({0}, '%Y-%m')".format(xColumnName, yColumnName, where, tableName, '%Y-%m')
 
-        if timeStatType == '年':
+        if timeStatType == 'year':
             sql = "SELECT DATE_FORMAT({0}, '%Y') {0}, sum({1}) total FROM {3} {2} GROUP BY DATE_FORMAT({0}, '%Y')".format(xColumnName, yColumnName, where, tableName, '%Y')
 
         L = []
@@ -573,11 +533,6 @@ def schemaName_value_riqitj(request, tableName, xColumnName, yColumnName, timeSt
 def schemaName_spider(request, tableName):
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": "success", "data": []}
-
-        # Linux
-        cmd = "cd /yykj/python/9999/spider08375 && scrapy crawl "+tableName+"Spider -a databaseName=djangoqo04n"
-        # Windows
-        # cmd = "cd C:\\test1\\spider && scrapy crawl " + tableName + "Spider"
         os.system(cmd)
 
         return JsonResponse(msg)
