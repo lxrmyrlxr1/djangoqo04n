@@ -12,7 +12,7 @@ from util import message as mes
 
 def config_page(request):
     '''
-    获取参数信息
+    Get parameter information
     :return:
     '''
     if request.method in ["POST", "GET"]:
@@ -64,7 +64,7 @@ def config_detail(request, id_):
 
 def config_save(request):
     '''
-    创建参数信息
+    Create parameter information
     :return:
     '''
     if request.method in ["POST", "GET"]:
@@ -101,7 +101,7 @@ def config_add(request):
 
 def config_update(request):
     '''
-    更new参数信息
+    More new-parameter information
     :return:
     '''
     if request.method in ["POST", "GET"]:
@@ -116,7 +116,7 @@ def config_update(request):
 
 def config_delete(request):
     '''
-    deleted参数信息
+    deleted Parameter information
     :return:
     '''
     if request.method in ["POST", "GET"]:
