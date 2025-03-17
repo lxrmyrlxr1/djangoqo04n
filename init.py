@@ -23,7 +23,7 @@ def initdb(ini="config.ini"):
 
         cm.conn_close()
     else:
-        print('请Revise当前面目录下的config.ini文件')
+        print(' Revise config.ini')
 
 @click.command()
 def initsql(ini="config.ini"):
@@ -45,7 +45,7 @@ def initsql(ini="config.ini"):
         cm.create_tables(createsql.split(';')[:-1])
         cm.conn_close()
     else:
-        print('请Revise当前面目录下的config.ini文件')
+        print('Revise config.ini')
 
 sub.add_command(initdb,"initdb")
 sub.add_command(initsql,"initsql")
