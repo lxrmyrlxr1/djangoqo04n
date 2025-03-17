@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from pyspark.sql import SparkSession
 from concurrent.futures.thread import ThreadPoolExecutor
 executor = ThreadPoolExecutor(20)
 from util.configread import config_read
