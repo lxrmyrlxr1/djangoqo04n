@@ -1,78 +1,79 @@
 import Vue from 'vue'
 import App from '@/App.vue'
-// element ui 完全引入
+// element ui Completely introduced
 import ElementUI from 'element-ui'
 import '@/assets/css/element-variables.scss'
 import '@/assets/css/style.scss'
-// 加载路由
+// Load the routing
 // import router from '@/router/router-static.js';
 import router from '@/router/router-static.js';
-// 面包屑导航，注册为全局组件
+// Breadcrumb navigation, registered as a global component
 import BreadCrumbs from '@/components/common/BreadCrumbs'
-// 引入echart
-import echarts from 'echarts'
-// 引入echart主题
+// Introducing the echart
+import * as echarts from 'echarts'
+import 'echarts-wordcloud'
+// Introduce the echart motif
 // import  '@/assets/js/echarts-theme-macarons.js'
 import 'echarts/theme/macarons.js'
 // ajax
 import http from '@/utils/http.js'
-// 基础配置
+// Basic configuration
 import base from '@/utils/base'
-// 工具类
+// utility class
 import { isAuth, getCurDate, getCurDateTime } from '@/utils/utils'
-// storage 封装
+// storage Package
 import storage from "@/utils/storage";
-// 上传组件
+// Upload the component
 import FileUpload from "@/components/common/FileUpload";
 import ExcelFileUpload from "@/components/common/ExcelFileUpload";
-// 富文本编辑组件
+// Rich text editing component
 import Editor from "@/components/common/Editor";
-// api 接口
+The // api interface
 import api from '@/utils/api'
-// 数据校验工具类
+// Data calibration tool class
 import * as validate from '@/utils/validate.js'
-// 后台地图
+// Background map
 import VueAMap from 'vue-amap'
 import '@/icons'
-//excel导出
+/ / Export export
 import JsonExcel from 'vue-json-excel'
-//打印
+// put a seal on
 import printJS from 'print-js'
 //MD5
 import md5 from 'js-md5';
-
-// 后台地图
-Vue.use(VueAMap)
-VueAMap.initAMapApiLoader({
-  key: 'ca04cee7ac952691aa67a131e6f0cee0',
-  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor', 'AMap.Geocoder'],
-  // 默认高德 sdk 版本为 1.4.4
-  v: '1.4.4'
+// Background map
+Vue.use (VueAMap)
+VueAMap.initAMapApiLoader ({
+//key: 'ca04cee7ac952691aa67a131e6f0cee0',
+key: '001d42eaa139dc53fd655e7c23c0187e',
+plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor', 'AMap.Geocoder'],
+// Default gold sdk, version 1.4.4
+v: '1.4.4'
 })
 Vue.prototype.$validate = validate
-Vue.prototype.$http = http // ajax请求方法
-Vue.prototype.$echarts = echarts
+Vue.prototype.$http = http / / ajax request method
+Vue.prototype. $echarts = echarts
 Vue.prototype.$base = base.get()
 Vue.prototype.$project = base.getProjectName()
 Vue.prototype.$storage = storage
-Vue.prototype.$api = api
-// 判断权限方法
+Vue.prototype. $api = api
+// Judgment authority method
 Vue.prototype.isAuth = isAuth
 Vue.prototype.getCurDateTime = getCurDateTime
 Vue.prototype.getCurDate = getCurDate
-// Vue.prototype.$base = base
+//Vue.prototype. $base = base
 Vue.use(ElementUI, { size: 'medium', zIndex: 3000 });
 Vue.config.productionTip = false
-// 组件全局组件
+// Component Global components
 Vue.component('bread-crumbs', BreadCrumbs)
 Vue.component('file-upload', FileUpload)
 Vue.component('excel-file-upload', ExcelFileUpload)
 Vue.component('editor', Editor)
-//excel导出
-Vue.component('downloadExcel', JsonExcel)
+/ / Export export
+Vue.component ('downloadExcel', JsonExcel)
 //MD5
-Vue.prototype.$md5 = md5;
-new  Vue({
-  render: h => h(App),
-  router
+Vue.prototype. $md5 = md5;
+New view ({
+render: h => h(App),
+router
 }).$mount('#app')
