@@ -215,5 +215,5 @@ ALLOWED_HOSTS = [    'djangoqo04n.onrender.com',
     'frail-rasia-woshiykexiaoxiaodeshitou-1e9edb32.koyeb.app',
     '127.0.0.1',]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+DEBUG = False
 
