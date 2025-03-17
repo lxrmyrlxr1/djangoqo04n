@@ -202,8 +202,8 @@ os.path.join(BASE_DIR, "templates/front/assets"),
 ]
 
 # media
-MEDIA_URL = "/media/"  # 自定义
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 自定义
+MEDIA_URL = "/media/"  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 if os.path.isdir(MEDIA_ROOT) == False:
     os.mkdir(MEDIA_ROOT)
 
