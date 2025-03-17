@@ -11,7 +11,7 @@ from threadlocals.threadlocals import get_current_request
 from django.db.models import Sum, Max, Min, Avg,Count
 from django.db.models import Q
 
-# model基础类
+# model basic class
 class BaseModel(models.Model):
     class Meta:
         abstract = True
@@ -33,12 +33,10 @@ class BaseModel(models.Model):
 
     def __Page(self, model, params, request, q):
         '''
-        刷表专用
-        http://ip:port/${schemaName}/${tableName}/page
-        page 当前页
-        pagesize 每页记录的长度
-        sort 排序字段,写死在这,如果刷表出错，立马崩溃
-        order 升序（默认asc）或者降序（desc）
+       page current page
+       pagesize Length of the record per page
+       Sort sort field, write dead in this, if the brush table error, immediately crash
+        order ascending sequence (default asc) or descending (desc)
         :param req_dict:
         :return:
         '''
@@ -84,7 +82,7 @@ class BaseModel(models.Model):
             __sort__ = model.__sort__
         except:
             __sort__ = None
-        # 手工实现模糊搜索orz
+        # Manual implementation of the fuzzy search
         fuzzy_key, fuzzy_val,contain_str = None, None,''
         print(params)
         condition = {}
@@ -98,19 +96,8 @@ class BaseModel(models.Model):
                     contain_str +='.filter({}__icontains="{}")'.format(fuzzy_key,fuzzy_val)
             else:
                 condition[copy.deepcopy(k)] = copy.deepcopy(v)
-        # if fuzzy_key != None:
-        #     del params[fuzzy_key]
-        #     contain_str='.filter({}__icontains="{}")'.format(fuzzy_key,fuzzy_val)
-        # __authSeparate__此属性为真，params添加userid，只Query个人数据
-        # try:
-        #     __authSeparate__ = model.__authSeparate__
-        # except:
-        #     __authSeparate__ = None
 
-        # #所有属性为"是"时才有效
-        # if __authSeparate__=='是':
-        #     request = get_current_request()
-        #     params["userid"] = request.session.get("params").get("id")
+                 
         order_by_str=''
         if sort != None or __sort__ != None:
             if sort == None:
@@ -186,7 +173,7 @@ class BaseModel(models.Model):
 
     def getbyColumn(self, model, columnName, new_params):
         '''
-        获取某表的某个字段的context列表，去重
+        Get the context list of a field of a table and remove it
         :param model:
         :param column:
         :return:
@@ -196,7 +183,7 @@ class BaseModel(models.Model):
 
     def __CreateByReq(self, model, params):
         '''
-        根据请求参数创建对应模型记录的公共方法
+        A common method for creating a corresponding model record from the requested parameters
         :param model:
         :param params:
         :return:
@@ -288,7 +275,7 @@ class BaseModel(models.Model):
 
     def createbyreq(self, model, params):
         '''
-        根据请求参数创建对应模型记录
+        Create a corresponding model record based on the requested parameters
         :param model:
         :param params:
         :return:
@@ -297,7 +284,7 @@ class BaseModel(models.Model):
 
     def __GetById(self, model, id):
         '''
-        根据id获取数据公共方法
+        Public method for obtaining data according to the id
         :param id:
         :return:
         '''
@@ -307,7 +294,7 @@ class BaseModel(models.Model):
 
     def getbyid(self, model, id):
         '''
-        根据id获取数据
+        Data were acquired according to the id
         :param model:
         :param id:
         :return:
@@ -330,7 +317,7 @@ class BaseModel(models.Model):
                 params['mima'] = copy.deepcopy(params.get('password'))
                 del params['password']
 
-        # 前端传了无用参数和传错参数名，在这里Revise
+        # The front end passed the useless parameter and the mispassed parameter name, here Revise
         paramss = {}
         columnList = self.getallcolumn(model, model)
         for k, v in params.items():
@@ -360,7 +347,7 @@ class BaseModel(models.Model):
             del params["type"]
         except:
             pass
-        # todo where是否合法
+        # todo where is legal
 
 
         datas = eval("model.objects.filter(**params).filter({}__range= [remindstart, remindend]).all()".format(columnName))
@@ -377,7 +364,7 @@ class BaseModel(models.Model):
 
     def getbetweenparams(self, model, columnName, params):
         '''
-        区域内Query
+         Query
         :param model:
         :param params:
         :return:
@@ -395,7 +382,7 @@ class BaseModel(models.Model):
 
     def getcomputedbycolumn(self, model, columnName):
         '''
-        求和最大最小平均值
+        And sum the maximum and minimum average
         :param model:
         :param columnName:
         :return:
@@ -404,8 +391,8 @@ class BaseModel(models.Model):
 
     def __GroupByColumnName(self, model, columnName, where):
         '''
-        django指定获取那些列:values
-         totalvalues里每一个字符串出现的次数
+        django Specify to get those columns: values
+        The number of times each string appears in the totalvalues
         :param model:
         :param columnName:
         :return:
@@ -421,7 +408,7 @@ class BaseModel(models.Model):
 
     def groupbycolumnname(self, model, columnName, where):
         '''
-        类别 total
+        type total
         :param model:
         :param params:
         :return:
@@ -430,7 +417,7 @@ class BaseModel(models.Model):
 
     def __GetValueByxyColumnName(self, model, xColumnName, yColumnName, where):
         '''
-        按值 total接口
+        value total 
         SELECT ${xColumnName}, ${yColumnName} total FROM ${tableName} order by ${yColumnName} desc limit 10
         :param model:
         :param xColumnName:
@@ -459,7 +446,7 @@ class BaseModel(models.Model):
 
     def __UpdateByParams(self, model, params):
         '''
-        根据接口传参更new对应id记录的公共方法
+        According to the interface transfer reference more new corresponding id record public method
         :param model:
         :param params:
         :return:
@@ -467,8 +454,8 @@ class BaseModel(models.Model):
         id_ = copy.deepcopy(params['id'])
         del params['id']
 
-        # 去掉多传的参数
-        column_list = self.getallcolumn(model,model)  # 获取所有字段名
+        # Remove the multipass parameter
+        column_list = self.getallcolumn(model,model)  # Gets all the field names
 
         newParams = {}
         for k, v in params.items():
@@ -555,7 +542,7 @@ class BaseModel(models.Model):
 
     def updatebyparams(self, model, params):
         '''
-        根据接口传参更new对应id记录
+        The new id record according to the interface
         :param params:
         :return:
         '''
@@ -563,7 +550,7 @@ class BaseModel(models.Model):
 
     def __Deletes(self, model,ids:list):
         '''
-        deleted记录：先Query，再deletedQuery结果公共方法
+        deleted Record: first Query, then deletedQuery results public method
         :param user:
         :return:
         '''
@@ -577,7 +564,7 @@ class BaseModel(models.Model):
 
     def deletes(self,model, ids:list):
         '''
-        deleted记录：先Query，再deletedQuery结果
+       deleted Record: the first Query, and then the deletedQuery of the results
         :param user:
         :return:
         '''
@@ -585,7 +572,7 @@ class BaseModel(models.Model):
 
     def __DeleteByParams(self, model, newParams: dict):
         '''
-        batch deleted的内部方法
+        The Internal method of the batch deleted
         :param model:
         :param params:
         :return:
@@ -632,7 +619,7 @@ class BaseModel(models.Model):
 
     def deletebyparams(self, model, ids: list):
         '''
-        根据数组传参batch deleted一个或多个id的记录
+        Record according to the array transmission parameter batch deleted one or more id
         :param model:
         :param params:
         :return:
@@ -653,7 +640,7 @@ class BaseModel(models.Model):
 
     def getallcolumn(self, model):
         """
-        获取当前模型的所有字段
+        Gets all of the fields for the current model
         :returns dict:
         """
         column_list = []
