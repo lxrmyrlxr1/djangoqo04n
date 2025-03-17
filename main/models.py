@@ -15,16 +15,16 @@ class menpiaoxinxi(BaseModel):
 
 
     __authTables__={}
-    __authPeople__='否'#用户表，表属性loginUserColumn对应的值就是username字段，mima就是password字段
-    __sfsh__='否'#表sfsh(是否审核，”是”或”否”)字段和sfhf(审核回复)字段，后台列表(page)的operate中要多一个”审核”按钮，点击”审核”弹出一个页面，包含”是否审核”和”审核回复”，点击confirm调用update接口，Revisesfsh和sfhf两个字段。
-    __authSeparate__='否'#后台列表权限
-    __thumbsUp__='否'#表属性thumbsUp[是/否]，addedthumbsupnum赞和crazilynum踩字段
-    __intelRecom__='否'#智能推荐功能(表属性：[intelRecom（是/否）],addedclicktime[前端不显示该字段]字段（调用info/detail接口的时候更new），按clicktime排序Query)
-    __browseClick__='否'#表属性[browseClick:是/否]，点击字段（clicknum），调用info/detail接口的时候后端自动+1）、投票功能（表属性[vote:是/否]，投票字段（votenum）,调用vote接口后端votenum+1
-    __foreEndListAuth__='否'#前台列表权限foreEndListAuth[是/否]；当foreEndListAuth=是，刷的表added用户字段userid，前台list列表接口仅能查看自己的记录和add接口后台赋值userid的值
-    __foreEndList__='是'#表属性[foreEndList]前台list:和后台默认的list列表页相似,只是摆在前台,否:指没有此页,是:表示有此页(不需要登陆即可查看),前要登:表示有此页且需要登陆后才能查看
-    __isAdmin__='否'#表属性isAdmin=”是”,刷出来的用户表也是administrator，即page和list可以查看所有人的考试记录(同时应用于其他表)
-    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'创建时间')
+    __authPeople__= 'No' # User table, the value corresponding to the table attribute loginUserColumn is the username field, and ma is the password field
+    __ Sfsh __ = 'no' # table sfsh ("audit," yes "or" no ") field and sfhf (audit reply) field, the background list (page) operate to a" audit "button, click" audit "pop up a page, including" whether "audit" and "audit reply", click confirm call update interface, Revisesfsh and sfhf two fields.
+    __authSeparate__= 'No' # background list permission
+    __thumbsUp__= 'No' # Table properties thumbsUp [Yes / No], addedthumbsupnum Like and crazilynum step fields
+    __intelRecom__= 'No' # Intelligent recommendation function (table attribute: [intelRecom (Yes / No)], addedclicktime [front end does not display this field] field (more new when calling info / detail interface), sort Query by clicktime)
+    __browseClick__= 'No' # Table attribute [browseClick: Yes / No], click the field (clicknum), the back end automatically + 1 when calling the info / detail interface), voting function (table attribute [vote: Yes / No), voting field (votenum), call the vote interface back end votenum + 1
+    __foreEndListAuth__= 'No' # Foreground list permission foreEndListAuth [Yes / No]; when foreEndListAuth= Yes, brush the table assigned user field userid, the foreground list list interface can only view its own record and the background value userid of the add interface
+    __foreEndList__= 'Yes' # table property [foreEndList] front ground list: similar to the background default list list page, only in the front desk, no: without this page, yes: means this page (do not need to log in to view), before login: means this page and need to log in to view
+    __isAdmin__= 'No' # table attribute isAdmin= "Yes", the generated user table is also administrator, namely page and list can view all the test records (while applied to other tables)
+    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'creat time')
     biaoti=models.CharField ( max_length=255, null=True, unique=False, verbose_name='title' )
     fengmian=models.TextField   (  null=True, unique=False, verbose_name='Cover' )
     laiyuan=models.TextField   (  null=True, unique=False, verbose_name='sources' )
@@ -57,16 +57,16 @@ class mingsuxinxi(BaseModel):
 
 
     __authTables__={}
-    __authPeople__='否'#用户表，表属性loginUserColumn对应的值就是username字段，mima就是password字段
-    __sfsh__='否'#表sfsh(是否审核，”是”或”否”)字段和sfhf(审核回复)字段，后台列表(page)的operate中要多一个”审核”按钮，点击”审核”弹出一个页面，包含”是否审核”和”审核回复”，点击confirm调用update接口，Revisesfsh和sfhf两个字段。
-    __authSeparate__='否'#后台列表权限
-    __thumbsUp__='否'#表属性thumbsUp[是/否]，addedthumbsupnum赞和crazilynum踩字段
-    __intelRecom__='否'#智能推荐功能(表属性：[intelRecom（是/否）],addedclicktime[前端不显示该字段]字段（调用info/detail接口的时候更new），按clicktime排序Query)
-    __browseClick__='否'#表属性[browseClick:是/否]，点击字段（clicknum），调用info/detail接口的时候后端自动+1）、投票功能（表属性[vote:是/否]，投票字段（votenum）,调用vote接口后端votenum+1
-    __foreEndListAuth__='否'#前台列表权限foreEndListAuth[是/否]；当foreEndListAuth=是，刷的表added用户字段userid，前台list列表接口仅能查看自己的记录和add接口后台赋值userid的值
-    __foreEndList__='是'#表属性[foreEndList]前台list:和后台默认的list列表页相似,只是摆在前台,否:指没有此页,是:表示有此页(不需要登陆即可查看),前要登:表示有此页且需要登陆后才能查看
-    __isAdmin__='否'#表属性isAdmin=”是”,刷出来的用户表也是administrator，即page和list可以查看所有人的考试记录(同时应用于其他表)
-    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'创建时间')
+    __authPeople__= 'No' # User table, the value corresponding to the table attribute loginUserColumn is the username field, and ma is the password field
+    __ Sfsh __ = 'no' # table sfsh ("audit," yes "or" no ") field and sfhf (audit reply) field, the background list (page) operate to a" audit "button, click" audit "pop up a page, including" whether "audit" and "audit reply", click confirm call update interface, Revisesfsh and sfhf two fields.
+    __authSeparate__= 'No' # background list permission
+    __thumbsUp__= 'No' # Table properties thumbsUp [Yes / No], addedthumbsupnum Like and crazilynum step fields
+    __intelRecom__= 'No' # Intelligent recommendation function (table attribute: [intelRecom (Yes / No)], addedclicktime [front end does not display this field] field (more new when calling info / detail interface), sort Query by clicktime)
+    __browseClick__= 'No' # Table attribute [browseClick: Yes / No], click the field (clicknum), the back end automatically + 1 when calling the info / detail interface), voting function (table attribute [vote: Yes / No), voting field (votenum), call the vote interface back end votenum + 1
+    __foreEndListAuth__= 'No' # Foreground list permission foreEndListAuth [Yes / No]; when foreEndListAuth= Yes, brush the table assigned user field userid, the foreground list list interface can only view its own record and the background value userid of the add interface
+    __foreEndList__= 'Yes' # table property [foreEndList] front ground list: similar to the background default list list page, only in the front desk, no: without this page, yes: means this page (do not need to log in to view), before login: means this page and need to log in to view
+    __isAdmin__= 'No' # table attribute isAdmin= "Yes", the generated user table is also administrator, namely page and list can view all the test records (while applied to other tables)
+    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'craeat time')
     biaoti=models.CharField ( max_length=255, null=True, unique=False, verbose_name='title' )
     fengmian=models.TextField   (  null=True, unique=False, verbose_name='Cover' )
     dizhi=models.CharField ( max_length=255, null=True, unique=False, verbose_name='address' )
@@ -95,23 +95,23 @@ class tejiajipiao(BaseModel):
 
 
     __authTables__={}
-    __authPeople__='否'#用户表，表属性loginUserColumn对应的值就是username字段，mima就是password字段
-    __sfsh__='否'#表sfsh(是否审核，”是”或”否”)字段和sfhf(审核回复)字段，后台列表(page)的operate中要多一个”审核”按钮，点击”审核”弹出一个页面，包含”是否审核”和”审核回复”，点击confirm调用update接口，Revisesfsh和sfhf两个字段。
-    __authSeparate__='否'#后台列表权限
-    __thumbsUp__='否'#表属性thumbsUp[是/否]，addedthumbsupnum赞和crazilynum踩字段
-    __intelRecom__='否'#智能推荐功能(表属性：[intelRecom（是/否）],addedclicktime[前端不显示该字段]字段（调用info/detail接口的时候更new），按clicktime排序Query)
-    __browseClick__='否'#表属性[browseClick:是/否]，点击字段（clicknum），调用info/detail接口的时候后端自动+1）、投票功能（表属性[vote:是/否]，投票字段（votenum）,调用vote接口后端votenum+1
-    __foreEndListAuth__='否'#前台列表权限foreEndListAuth[是/否]；当foreEndListAuth=是，刷的表added用户字段userid，前台list列表接口仅能查看自己的记录和add接口后台赋值userid的值
-    __foreEndList__='否'#表属性[foreEndList]前台list:和后台默认的list列表页相似,只是摆在前台,否:指没有此页,是:表示有此页(不需要登陆即可查看),前要登:表示有此页且需要登陆后才能查看
-    __isAdmin__='否'#表属性isAdmin=”是”,刷出来的用户表也是administrator，即page和list可以查看所有人的考试记录(同时应用于其他表)
-    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'创建时间')
-    chufadi=models.CharField ( max_length=255, null=True, unique=False, verbose_name='出发地' )
-    mudidi=models.CharField ( max_length=255, null=True, unique=False, verbose_name='目的地' )
-    fengjingtu=models.TextField   (  null=True, unique=False, verbose_name='风景图' )
-    chufashijian=models.CharField ( max_length=255, null=True, unique=False, verbose_name='出发时间' )
+    __authPeople__= 'No' # User table, the value corresponding to the table attribute loginUserColumn is the username field, and ma is the password field
+    __ Sfsh __ = 'no' # table sfsh ("audit," yes "or" no ") field and sfhf (audit reply) field, the background list (page) operate to a" audit "button, click" audit "pop up a page, including" whether "audit" and "audit reply", click confirm call update interface, Revisesfsh and sfhf two fields.
+    __authSeparate__= 'No' # background list permission
+    __thumbsUp__= 'No' # Table properties thumbsUp [Yes / No], addedthumbsupnum Like and crazilynum step fields
+    __intelRecom__= 'No' # Intelligent recommendation function (table attribute: [intelRecom (Yes / No)], addedclicktime [front end does not display this field] field (more new when calling info / detail interface), sort Query by clicktime)
+    __browseClick__= 'No' # Table attribute [browseClick: Yes / No], click the field (clicknum), the back end automatically + 1 when calling the info / detail interface), voting function (table attribute [vote: Yes / No), voting field (votenum), call the vote interface back end votenum + 1
+    __foreEndListAuth__= 'No' # Foreground list permission foreEndListAuth [Yes / No]; when foreEndListAuth= Yes, brush the table assigned user field userid, the foreground list list interface can only view its own record and the background value userid of the add interface
+    __foreEndList__= 'No' # Table property [foreEndList] Front ground list: similar to the background default list list page, but in the front ground, no: without this page, yes: means this page (do not need to log in to view), before: means this page and need to log in to view
+    __isAdmin__= 'No' # table attribute isAdmin= "Yes", the generated user table is also administrator, namely page and list can view all the test records (while applied to other tables)
+    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'creat time')
+    chufadi=models.CharField (max_length=255, null = True, unique=False, verbose_name= 'starting point')
+    mudidi=models.CharField (max_length=255, null = True, unique=False, verbose_name= 'destination')
+    fengjingtu=models.TextField   (  null=True, unique=False, verbose_name='Landscape map' )
+    chufashijian=models.CharField (max_length=255, null = True, unique=False, verbose_name= 'departure time')
     jiage=models.CharField ( max_length=255, null=True, unique=False, verbose_name='price' )
-    redu=models.CharField ( max_length=255, null=True, unique=False, verbose_name='热度' )
-    biaoqian=models.CharField ( max_length=255, null=True, unique=False, verbose_name='标签' )
+    redu=models.CharField ( max_length=255, null=True, unique=False, verbose_name='heat' )
+    biaoqian=models.CharField ( max_length=255, null=True, unique=False, verbose_name='label' )
     miaoshu=models.TextField   (  null=True, unique=False, verbose_name='description' )
     '''
     chufadi=VARCHAR
@@ -125,7 +125,7 @@ class tejiajipiao(BaseModel):
     '''
     class Meta:
         db_table = 'tejiajipiao'
-        verbose_name = verbose_name_plural = '特价机票'
+        verbose_name = verbose_name_plural = 'lower price'
 class systemintro(BaseModel):
     __doc__ = u'''systemintro'''
     __tablename__ = 'systemintro'
@@ -133,7 +133,7 @@ class systemintro(BaseModel):
 
 
     __authTables__={}
-    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'创建时间')
+    addtime = models.DateTimeField(auto_now_add=False, verbose_name=u'creat time')
     title=models.CharField ( max_length=255,null=False, unique=False, verbose_name='title' )
     subtitle=models.CharField ( max_length=255, null=True, unique=False, verbose_name='subtitle' )
     content=models.TextField   ( null=False, unique=False, verbose_name='context' )
@@ -150,4 +150,4 @@ class systemintro(BaseModel):
     '''
     class Meta:
         db_table = 'systemintro'
-        verbose_name = verbose_name_plural = '关于我们'
+        verbose_name = verbose_name_plural = 'about us'
