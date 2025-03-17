@@ -7,7 +7,7 @@ from main import users_v, config_v, schema_v
 
 # from dj2.settings import dbName as schemaName
 
-# url规则列表
+# url list of rules
 urlpatterns = [
     path(r'users/register', users_v.users_register),
     path(r'users/login', users_v.users_login),
@@ -29,25 +29,25 @@ urlpatterns = [
     path(r'config/delete', config_v.config_delete),
 
 ]
-# main app的路径
+# main app
 mainDir = os.path.join(os.getcwd(), "main")
 
-# 过滤文件的列表
+# Filter the list of the files
 excludeList = [
     "schema_v.py",
     "users_v.py",
     "config_v.py",
 ]
 
-# 循环当前目录下的py文件
+#Loop the py file in the current directory
 
 view_tuple = set()
 for i in os.listdir(mainDir):
     if i not in excludeList and i[-5:] == "_v.py":
-        viewName = i[:-3]  # 去掉.py后缀字符串
+        viewName = i[:-3]  # do away with. The py suffix string
         view_tuple.add("from main import {}".format(viewName))
 
-# 组合成import字符串
+# Combined into a import string
 import_str = '\n'.join(view_tuple)
 # print(import_str)
 exec(import_str)
@@ -107,11 +107,7 @@ for i in os.listdir(mainDir):
                      eval("{}_v.{}_group".format(tableName.capitalize(), tableName.lower()))),
             ]
         )
-        #沙箱接口
-
-        
-
-
+        #Sandbox interface
 
         if tableName.lower() == "menpiaoxinxi":
             urlpatterns.extend(
@@ -120,10 +116,6 @@ for i in os.listdir(mainDir):
                          eval("{}_v.{}_count".format(tableName.capitalize(), tableName.lower()))),
                 ]
             )
-
-
-        
-
 
 
         if tableName.lower() == "mingsuxinxi":
@@ -135,19 +127,7 @@ for i in os.listdir(mainDir):
             )
 
 
-        
-
-
-
-
-
-        
-
-
-
-
-
-        # examrecord特定接口
+        # examrecord Specific interface
         if tableName.lower() == "examrecord":
             urlpatterns.extend(
                 [
@@ -158,7 +138,7 @@ for i in os.listdir(mainDir):
                 ]
             )
 
-        # forum特定接口
+        # forum Specific interface
         if tableName.lower() == "forum":
             urlpatterns.extend(
                 [
@@ -188,9 +168,9 @@ urlpatterns.extend(
         path(r'matchFace', schema_v.schemaName_matchface),
         path(r'option/<tableName>/<columnName>', schema_v.schemaName_option),
         path(r'remind/<tableName>/<columnName>/<type>', schema_v.schemaName_remind_tablename_columnname_type),
-        # 前台提醒接口（通用接口，不需要登陆）
+        # Front desk reminder interface (universal interface, no login required)
         path(r'<tableName>/remind/<columnName>/<type>', schema_v.schemaName_tablename_remind_columnname_type),
-        # 后台提醒接口 (每个表的单独接口，需login)
+        # Background reminder interface (separate interface for each table, requiring login)
         path(r'sh/<tableName>', schema_v.schemaName_sh),
         path(r'upload/<fileName>', schema_v.schemaName_upload),
         path(r'group/<tableName>/<columnName>', schema_v.schemaName_group_quyu),
