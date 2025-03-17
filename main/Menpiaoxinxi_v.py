@@ -35,7 +35,7 @@ def menpiaoxinxi_register(request):
         error = menpiaoxinxi.createbyreq(menpiaoxinxi, menpiaoxinxi, req_dict)
         if error != None:
             msg['code'] = crud_error_code
-            msg['msg'] = "用户已存在,请勿重复注册!"
+            msg['msg'] = "User already exists!"
         return JsonResponse(msg)
 
 def menpiaoxinxi_login(request):
@@ -53,10 +53,10 @@ def menpiaoxinxi_login(request):
         except:
             __sfsh__=None
 
-        if  __sfsh__=='是':
-            if datas[0].get('sfsh')!='是':
+        if  __sfsh__=='yes':
+            if datas[0].get('sfsh')!='yes':
                 msg['code']=other_code
-                msg['msg'] = "账号已锁定，请联系administrator审核!"
+                msg['msg'] = "Account locked!"
                 return JsonResponse(msg)
                 
         req_dict['id'] = datas[0].get('id')
@@ -68,7 +68,7 @@ def menpiaoxinxi_login(request):
 def menpiaoxinxi_logout(request):
     if request.method in ["POST", "GET"]:
         msg = {
-            "msg": "登出success",
+            "msg": "exit success",
             "code": 0
         }
 
@@ -105,7 +105,7 @@ def menpiaoxinxi_resetPass(request):
         records=menpiaoxinxi.getbyparams(menpiaoxinxi, menpiaoxinxi, recordsParam)
         if len(records)<1:
             msg['code'] = 400
-            msg['msg'] = '用户不存在'
+            msg['msg'] = 'User does not exist'
             return JsonResponse(msg)
 
         eval('''menpiaoxinxi.objects.filter({}='{}').update({}='{}')'''.format(username_str,username,password_str,init_pwd))
@@ -131,7 +131,7 @@ def menpiaoxinxi_default(request):
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code,"msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
-        req_dict.update({"isdefault":"是"})
+        req_dict.update({"isdefault":"yes"})
         data=menpiaoxinxi.getbyparams(menpiaoxinxi, menpiaoxinxi, req_dict)
         if len(data)>0:
             msg['data']  = data[0]
@@ -146,10 +146,10 @@ def menpiaoxinxi_page(request):
         msg = {"code": normal_code, "msg": mes.normal_code,  "data":{"currPage":1,"totalPage":1,"total":1,"pageSize":10,"list":[]}}
         req_dict = request.session.get("req_dict")
 
-        #获取全部列名
+        #Get all column names
         columns=  menpiaoxinxi.getallcolumn( menpiaoxinxi, menpiaoxinxi)
 
-        #当前login用户所在表
+        #The table where the currently logged in user is located
         tablename = request.session.get("tablename")
 
 
@@ -160,13 +160,13 @@ def menpiaoxinxi_page(request):
                 #params = request.session.get("params")
                 #req_dict[authColumn]=params.get(authColumn)
 
-        '''__authSeparate__此属性为真，params添加userid，后台只Query个人数据'''
+        '''__authSeparate__true，params add users id，backend Query personal data'''
         try:
             __authSeparate__=menpiaoxinxi.__authSeparate__
         except:
             __authSeparate__=None
 
-        if __authSeparate__=="是":
+        if __authSeparate__=="yes":
             tablename=request.session.get("tablename")
             if tablename!="users" and 'userid' in columns:
                 try:
@@ -174,21 +174,22 @@ def menpiaoxinxi_page(request):
                 except:
                     pass
 
-        #当项目属性hasMessage为”是”，生成系统自动生成留言板的表messages，同时该表的表属性hasMessage也被设置为”是”,字段包括userid（用户id），username(username)，content（留言context），reply（回复）
-        #接口page需要区分权限，普通用户查看自己的留言和回复记录，administrator查看所有的留言和回复记录
+    #When the project attribute hasMessage is "yes", the generation system automatically generates the message board table messages, and the table attribute hasMessage of the table is also set to "yes". The fields include userid (user id), username (username), content (message context), reply (reply)
+    #The interface page needs to distinguish permissions. Ordinary users view their own messages and reply records, and administrators view all messages and reply records
         try:
             __hasMessage__=menpiaoxinxi.__hasMessage__
         except:
             __hasMessage__=None
-        if  __hasMessage__=="是":
+        if  __hasMessage__=="yes":
             tablename=request.session.get("tablename")
             if tablename!="users":
                 req_dict["userid"]=request.session.get("params").get("id")
 
 
 
-        # 判断当前表的表属性isAdmin,为真则是administrator表
-        # 当表属性isAdmin=”是”,刷出来的用户表也是administrator，即page和list可以查看所有人的考试记录(同时应用于其他表)
+      # Check the table attribute isAdmin of the current table. If it is true, it is the administrator table.
+      # When the table attribute isAdmin = "yes", the user table that is refreshed is also the administrator, that is, page and list can view everyone's test records (also applies to other tables)
+
         __isAdmin__ = None
 
         allModels = apps.get_app_config('main').get_models()
@@ -201,17 +202,17 @@ def menpiaoxinxi_page(request):
                     __isAdmin__ = None
                 break
 
-        # 当前表也是有administrator权限的表
-        if  __isAdmin__ == "是" and 'menpiaoxinxi' != 'forum':
+        # The current table also has administrator privileges.
+        if  __isAdmin__ == "yes" and 'menpiaoxinxi' != 'forum':
             if req_dict.get("userid") and 'menpiaoxinxi' != 'chat':
                 del req_dict["userid"]
 
         else:
-            #非administrator权限的表,判断当前表字段名是否有userid
+            #For tables without administrator privileges, check whether the current table field name has userid
             if tablename!="users" and 'menpiaoxinxi'[:7]!='discuss'and "userid" in menpiaoxinxi.getallcolumn(menpiaoxinxi,menpiaoxinxi):
                 req_dict["userid"] = request.session.get("params").get("id")
 
-        #当列属性authTable有值(某个用户表)[该列的列名必须和该用户表的登陆字段名一致]，则对应的表有个隐藏属性authTable为”是”，那么该用户查看该表信息时，只能查看自己的
+       #When the column attribute authTable has a value (a user table) [the column name must be consistent with the login field name of the user table], the corresponding table has a hidden attribute authTable with a value of "yes", then when the user views the table information, he can only view his own
         try:
             __authTables__=menpiaoxinxi.__authTables__
         except:
@@ -242,8 +243,8 @@ def menpiaoxinxi_page(request):
 
 def menpiaoxinxi_autoSort(request):
     '''
-    ．智能推荐功能(表属性：[intelRecom（是/否）],addedclicktime[前端不显示该字段]字段（调用info/detail接口的时候更new），按clicktime排序Query)
-主要信息列表（如商品列表，new闻列表）中使用，显示最近点击的或最new添加的5条记录就行
+  ． Intelligent recommendation function (table attributes: [intelRecom (yes/no)], addedclicktime [this field is not displayed on the front end] field (new when calling info/detail interface), sort by clicktime Query)
+Used in the main information list (such as product list, new news list), just display the 5 most recently clicked or most recently added records
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code,  "data":{"currPage":1,"totalPage":1,"total":1,"pageSize":10,"list":[]}}
@@ -263,7 +264,7 @@ def menpiaoxinxi_autoSort(request):
 
 def menpiaoxinxi_list(request):
     '''
-    前台分页
+   Front page
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code,  "data":{"currPage":1,"totalPage":1,"total":1,"pageSize":10,"list":[]}}
@@ -271,15 +272,15 @@ def menpiaoxinxi_list(request):
         if req_dict.__contains__('vipread'):
             del req_dict['vipread']
 
-        #获取全部列名
+        #Get all column names
         columns=  menpiaoxinxi.getallcolumn( menpiaoxinxi, menpiaoxinxi)
-        #表属性[foreEndList]前台list:和后台默认的list列表页相似,只是摆在前台,否:指没有此页,是:表示有此页(不需要登陆即可查看),前要登:表示有此页且需要登陆后才能查看
+        #Table attributes [foreEndList] Foreground list: Similar to the default list page in the background, but placed in the foreground, No: means there is no such page, Yes: means there is such page (you can view it without logging in), Need to log in: means there is such page and you need to log in to view it
         try:
             __foreEndList__=menpiaoxinxi.__foreEndList__
         except:
             __foreEndList__=None
 
-        if __foreEndList__=="前要登":
+        if __foreEndList__=="Before":
             tablename=request.session.get("tablename")
             if tablename!="users" and 'userid' in columns:
                 try:
@@ -299,13 +300,13 @@ def menpiaoxinxi_list(request):
         except:
             __authSeparate__=None
 
-        if __foreEndListAuth__ =="是" and __authSeparate__=="是":
+        if __foreEndListAuth__ =="yes" and __authSeparate__=="yes":
             tablename=request.session.get("tablename")
             if tablename!="users":
                 req_dict['userid']=request.session.get("params",{"id":0}).get("id")
 
         tablename = request.session.get("tablename")
-        if tablename == "users" and req_dict.get("userid") != None:#判断是否存在userid列名
+        if tablename == "users" and req_dict.get("userid") != None:#Judge whether there is a userid column name
             del req_dict["userid"]
         else:
             __isAdmin__ = None
@@ -320,24 +321,24 @@ def menpiaoxinxi_list(request):
                         __isAdmin__ = None
                     break
 
-            if __isAdmin__ == "是":
+            if __isAdmin__ == "yes":
                 if req_dict.get("userid"):
                     # del req_dict["userid"]
                     pass
             else:
-                #非administrator权限的表,判断当前表字段名是否有userid
+                #For tables without administrator privileges, check whether the current table field name has userid
                 if "userid" in columns:
                     try:
                         pass
                     except:
                             pass
-        #当列属性authTable有值(某个用户表)[该列的列名必须和该用户表的登陆字段名一致]，则对应的表有个隐藏属性authTable为”是”，那么该用户查看该表信息时，只能查看自己的
+        #When the column attribute authTable has a value (a user table) [the column name must be consistent with the login field name of the user table], the corresponding table has a hidden attribute authTable with a value of "yes", then when the user views the table information, he can only view his own
         try:
             __authTables__=menpiaoxinxi.__authTables__
         except:
             __authTables__=None
 
-        if __authTables__!=None and  __authTables__!={} and __foreEndListAuth__=="是":
+        if __authTables__!=None and  __authTables__!={} and __foreEndListAuth__=="yes":
             try:
                 del req_dict['userid']
             except:
@@ -365,7 +366,7 @@ def menpiaoxinxi_list(request):
 
 def menpiaoxinxi_save(request):
     '''
-    后台added
+    backend added
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
@@ -385,7 +386,7 @@ def menpiaoxinxi_save(request):
                 break
 
 
-        #获取全部列名
+        #Get all column names
         columns=  menpiaoxinxi.getallcolumn( menpiaoxinxi, menpiaoxinxi)
         if tablename!='users' and req_dict.get("userid")!=None and 'userid' in columns  and __isAdmin__!='是':
             params=request.session.get("params")
@@ -405,20 +406,20 @@ def menpiaoxinxi_save(request):
 
 def menpiaoxinxi_add(request):
     '''
-    前台added
+    fronted added
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
 
-        #获取全部列名
+        #Get all column names
         columns=  menpiaoxinxi.getallcolumn( menpiaoxinxi, menpiaoxinxi)
         try:
             __authSeparate__=menpiaoxinxi.__authSeparate__
         except:
             __authSeparate__=None
 
-        if __authSeparate__=="是":
+        if __authSeparate__=="yes":
             tablename=request.session.get("tablename")
             if tablename!="users" and 'userid' in columns:
                 try:
@@ -431,7 +432,7 @@ def menpiaoxinxi_add(request):
         except:
             __foreEndListAuth__=None
 
-        if __foreEndListAuth__ and __foreEndListAuth__!="否":
+        if __foreEndListAuth__ and __foreEndListAuth__!="no":
             tablename=request.session.get("tablename")
             if tablename!="users":
                 req_dict['userid']=request.session.get("params").get("id")
@@ -447,7 +448,7 @@ def menpiaoxinxi_add(request):
 
 def menpiaoxinxi_thumbsup(request,id_):
     '''
-     点赞：表属性thumbsUp[是/否]，刷表addedthumbsupnum赞和crazilynum踩字段，
+     Like: table attribute thumbsUp [yes/no], refresh the table addedthumbsupnum likes and crazilynum dislikes fields,
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
@@ -459,9 +460,9 @@ def menpiaoxinxi_thumbsup(request,id_):
         update_dict={
         "id":id_,
         }
-        if type_==1:#赞
+        if type_==1:#yes
             update_dict["thumbsupnum"]=int(rets[0].get('thumbsupnum'))+1
-        elif type_==2:#踩
+        elif type_==2:#no
             update_dict["crazilynum"]=int(rets[0].get('crazilynum'))+1
         error = menpiaoxinxi.updatebyparams(menpiaoxinxi,menpiaoxinxi, update_dict)
         if error!=None:
@@ -481,13 +482,13 @@ def menpiaoxinxi_info(request,id_):
             msg['data']=data[0]
             if msg['data'].__contains__("reversetime"):
                 msg['data']['reversetime'] = msg['data']['reversetime'].strftime("%Y-%m-%d %H:%M:%S")
-        #浏览点击次数
+        #Number of views and clicks
         try:
             __browseClick__= menpiaoxinxi.__browseClick__
         except:
             __browseClick__=None
 
-        if __browseClick__=="是"  and  "clicknum"  in menpiaoxinxi.getallcolumn(menpiaoxinxi,menpiaoxinxi):
+        if __browseClick__=="yes"  and  "clicknum"  in menpiaoxinxi.getallcolumn(menpiaoxinxi,menpiaoxinxi):
             try:
                 clicknum=int(data[0].get("clicknum",0))+1
             except:
@@ -511,13 +512,13 @@ def menpiaoxinxi_detail(request,id_):
             if msg['data'].__contains__("reversetime"):
                 msg['data']['reversetime'] = msg['data']['reversetime'].strftime("%Y-%m-%d %H:%M:%S")
 
-        #浏览点击次数
+        #Number of views and clicks
         try:
             __browseClick__= menpiaoxinxi.__browseClick__
         except:
             __browseClick__=None
 
-        if __browseClick__=="是"   and  "clicknum"  in menpiaoxinxi.getallcolumn(menpiaoxinxi,menpiaoxinxi):
+        if __browseClick__=="yes"   and  "clicknum"  in menpiaoxinxi.getallcolumn(menpiaoxinxi,menpiaoxinxi):
             try:
                 clicknum=int(data[0].get("clicknum",0))+1
             except:
@@ -575,8 +576,8 @@ def menpiaoxinxi_delete(request):
 
 def menpiaoxinxi_vote(request,id_):
     '''
-    浏览点击次数（表属性[browseClick:是/否]，点击字段（clicknum），调用info/detail接口的时候后端自动+1）、投票功能（表属性[vote:是/否]，投票字段（votenum）,调用vote接口后端votenum+1）
- total商品或new闻的点击次数；提供new闻的投票功能
+   Browsing click count (table attribute [browseClick: yes/no], click field (clicknum), backend automatically +1 when calling info/detail interface), voting function (table attribute [vote: yes/no], voting field (votenum), backend vote+1 when calling vote interface)
+total number of clicks on products or news; provide voting function for news
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code}
@@ -616,7 +617,7 @@ def menpiaoxinxi_importExcel(request):
                 
         else:
             msg = {
-                "msg": "文件类型错误",
+                "msg": "type wrong",
                 "code": 500
             }
                 
@@ -630,19 +631,19 @@ def menpiaoxinxi_sendemail(request):
         to = []
         to.append(req_dict['email'])
 
-        send_mail('用户注册', '您的注册验证码是【'+''.join(code)+'】，请不要把验证码泄漏给其他人，如非本人请勿operate。', 'yclw9@qq.com', to, fail_silently = False)
+        send_mail('User Registration', 'Your registration verification code is ['+''.join(code)+'], please do not disclose the verification code to others, and do not operate it if you are not yourself. ', 'yclw9@qq.com', to, fail_silently = False)
 
         cursor = connection.cursor()
         cursor.execute("insert into emailregistercode(email,role,code) values('"+req_dict['email']+"','用户','"+''.join(code)+"')")
 
         msg = {
-            "msg": "发送success",
+            "msg": "send success",
             "code": 0
         }
 
         return JsonResponse(msg)
 
-# 推荐算法接口
+# Recommendation algorithm interface
 def menpiaoxinxi_autoSort2(request):
     
     if request.method in ["POST", "GET"]:
@@ -681,13 +682,13 @@ def menpiaoxinxi_value(request, xColumnName, yColumnName, timeStatType):
         
         where = ' where 1 = 1 '
         sql = ''
-        if timeStatType == '日':
+        if timeStatType == 'day':
             sql = "SELECT DATE_FORMAT({0}, '%Y-%m-%d') {0}, sum({1}) total FROM menpiaoxinxi {2} GROUP BY DATE_FORMAT({0}, '%Y-%m-%d') LIMIT 10".format(xColumnName, yColumnName, where, '%Y-%m-%d')
 
-        if timeStatType == '月':
+        if timeStatType == 'month':
             sql = "SELECT DATE_FORMAT({0}, '%Y-%m') {0}, sum({1}) total FROM menpiaoxinxi {2} GROUP BY DATE_FORMAT({0}, '%Y-%m') LIMIT 10".format(xColumnName, yColumnName, where, '%Y-%m')
 
-        if timeStatType == '年':
+        if timeStatType == 'year':
             sql = "SELECT DATE_FORMAT({0}, '%Y') {0}, sum({1}) total FROM menpiaoxinxi {2} GROUP BY DATE_FORMAT({0}, '%Y') LIMIT 10".format(xColumnName, yColumnName, where, '%Y')
 
         func_name = sys._getframe().f_code.co_name
@@ -750,7 +751,7 @@ def menpiaoxinxi_o_value(request, xColumnName, yColumnName):
 
 def menpiaoxinxi_count(request):
     '''
-    总数接口
+    Total number of interfaces
     '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": "success", "data": {}}
