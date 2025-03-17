@@ -211,7 +211,9 @@ ALIPAY_APP_ID = ''
 APP_PRIVATE_KEY_STRING = open('{}/util/alipay_key/app_private_2048.txt'.format(BASE_DIR)).read()
 ALIPAY_PUBLIC_KEY_STRING = open('{}/util/alipay_key/alipay_public_2048.txt'.format(BASE_DIR)).read()
 ALIPAY_SIGN_TYPE = 'RSA2'
-ALLOWED_HOSTS = ['frail-rasia-woshiykexiaoxiaodeshitou-1e9edb32.koyeb.app/', '127.0.0.1']
+ALLOWED_HOSTS = [    'djangoqo04n.onrender.com',
+    'frail-rasia-woshiykexiaoxiaodeshitou-1e9edb32.koyeb.app',
+    '127.0.0.1',]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
