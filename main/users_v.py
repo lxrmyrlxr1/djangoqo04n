@@ -39,8 +39,6 @@ def users_register(request):
 
 
 def users_session(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code,"msg":mes.normal_code, "data": {}}
 
@@ -53,7 +51,7 @@ def users_session(request):
 def users_logout(request):
     if request.method in ["POST", "GET"]:
         msg = {
-            "msg": "退出success",
+            "msg": "exit success",
             "code": 0
         }
 
@@ -61,8 +59,6 @@ def users_logout(request):
 
 
 def users_page(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code,
                "data": {"currPage": 1, "totalPage": 1, "total": 1, "pageSize": 10, "list": []}}
@@ -72,7 +68,7 @@ def users_page(request):
             __hasMessage__ = users.__hasMessage__
         except:
             __hasMessage__ = None
-        if __hasMessage__ and __hasMessage__ != "否":
+        if __hasMessage__ and __hasMessage__ != "no":
 
             if tablename != "users":
                 req_dict["userid"] = request.session.get("params").get("id")
@@ -87,15 +83,13 @@ def users_page(request):
 
 
 def users_info(request, id_):
-    '''
-    '''
+
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
 
         data = users.getbyid(users, users, int(id_))
         if len(data) > 0:
             msg['data'] = data[0]
-        # 浏览点击次数
         try:
             __browseClick__ = users.__browseClick__
         except:
@@ -111,8 +105,6 @@ def users_info(request, id_):
 
 
 def users_save(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
@@ -125,8 +117,6 @@ def users_save(request):
 
 
 def users_update(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
@@ -147,8 +137,6 @@ def users_update(request):
 
 
 def users_delete(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
