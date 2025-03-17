@@ -22,10 +22,6 @@ from dj2.settings import executor
 from util.spark_func import spark_read_mysql
 
 
-
-
-
-
 def systemintro_register(request):
     if request.method in ["POST", "GET"]:
         msg = {'code': normal_code, "msg": mes.normal_code}
@@ -76,8 +72,7 @@ def systemintro_logout(request):
 
 
 def systemintro_resetPass(request):
-    '''
-    '''
+
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code}
 
@@ -140,8 +135,6 @@ def systemintro_default(request):
         return JsonResponse(msg)
 
 def systemintro_page(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code,  "data":{"currPage":1,"totalPage":1,"total":1,"pageSize":10,"list":[]}}
         req_dict = request.session.get("req_dict")
@@ -151,8 +144,6 @@ def systemintro_page(request):
 
 
         tablename = request.session.get("tablename")
-
-
 
 
         '''__authSeparate__，'''
@@ -168,8 +159,6 @@ def systemintro_page(request):
                     req_dict['userid']=request.session.get("params").get("id")
                 except:
                     pass
-
-
         try:
             __hasMessage__=systemintro.__hasMessage__
         except:
@@ -178,8 +167,6 @@ def systemintro_page(request):
             tablename=request.session.get("tablename")
             if tablename!="users":
                 req_dict["userid"]=request.session.get("params").get("id")
-
-
 
 
         __isAdmin__ = None
@@ -193,7 +180,6 @@ def systemintro_page(request):
                 except:
                     __isAdmin__ = None
                 break
-
 
         if  __isAdmin__ == "yes" and 'systemintro' != 'forum':
             if req_dict.get("userid") and 'systemintro' != 'chat':
@@ -234,9 +220,6 @@ def systemintro_page(request):
         return JsonResponse(msg)
 
 def systemintro_autoSort(request):
-    '''
-
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code,  "data":{"currPage":1,"totalPage":1,"total":1,"pageSize":10,"list":[]}}
         req_dict = request.session.get("req_dict")
@@ -254,9 +237,6 @@ def systemintro_autoSort(request):
 
 
 def systemintro_list(request):
-    '''
-
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code,  "data":{"currPage":1,"totalPage":1,"total":1,"pageSize":10,"list":[]}}
         req_dict = request.session.get("req_dict")
@@ -291,13 +271,13 @@ def systemintro_list(request):
         except:
             __authSeparate__=None
 
-        if __foreEndListAuth__ =="是" and __authSeparate__=="是":
+        if __foreEndListAuth__ =="yes" and __authSeparate__=="yes":
             tablename=request.session.get("tablename")
             if tablename!="users":
                 req_dict['userid']=request.session.get("params",{"id":0}).get("id")
 
         tablename = request.session.get("tablename")
-        if tablename == "users" and req_dict.get("userid") != None:#判断是否存在userid列名
+        if tablename == "users" and req_dict.get("userid") != None:
             del req_dict["userid"]
         else:
             __isAdmin__ = None
@@ -317,13 +297,11 @@ def systemintro_list(request):
                     # del req_dict["userid"]
                     pass
             else:
-                #非administrator权限的表,判断当前表字段名是否有userid
                 if "userid" in columns:
                     try:
                         pass
                     except:
                             pass
-        #当列属性authTable有值(某个用户表)[该列的列名必须和该用户表的登陆字段名一致]，则对应的表有个隐藏属性authTable为”是”，那么该用户查看该表信息时，只能查看自己的
         try:
             __authTables__=systemintro.__authTables__
         except:
@@ -356,9 +334,6 @@ def systemintro_list(request):
         return JsonResponse(msg)
 
 def systemintro_save(request):
-    '''
-    后台added
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
@@ -377,7 +352,6 @@ def systemintro_save(request):
                 break
 
 
-        #获取全部列名
         columns=  systemintro.getallcolumn( systemintro, systemintro)
         if tablename!='users' and req_dict.get("userid")!=None and 'userid' in columns  and __isAdmin__!='是':
             params=request.session.get("params")
@@ -396,21 +370,17 @@ def systemintro_save(request):
 
 
 def systemintro_add(request):
-    '''
-    前台added
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
 
-        #获取全部列名
         columns=  systemintro.getallcolumn( systemintro, systemintro)
         try:
             __authSeparate__=systemintro.__authSeparate__
         except:
             __authSeparate__=None
 
-        if __authSeparate__=="是":
+        if __authSeparate__=="yes":
             tablename=request.session.get("tablename")
             if tablename!="users" and 'userid' in columns:
                 try:
@@ -423,7 +393,7 @@ def systemintro_add(request):
         except:
             __foreEndListAuth__=None
 
-        if __foreEndListAuth__ and __foreEndListAuth__!="否":
+        if __foreEndListAuth__ and __foreEndListAuth__!="no":
             tablename=request.session.get("tablename")
             if tablename!="users":
                 req_dict['userid']=request.session.get("params").get("id")
@@ -438,9 +408,6 @@ def systemintro_add(request):
         return JsonResponse(msg)
 
 def systemintro_thumbsup(request,id_):
-    '''
-     点赞：表属性thumbsUp[是/否]，刷表addedthumbsupnum赞和crazilynum踩字段，
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
@@ -451,9 +418,9 @@ def systemintro_thumbsup(request,id_):
         update_dict={
         "id":id_,
         }
-        if type_==1:#赞
+        if type_==1:
             update_dict["thumbsupnum"]=int(rets[0].get('thumbsupnum'))+1
-        elif type_==2:#踩
+        elif type_==2:
             update_dict["crazilynum"]=int(rets[0].get('crazilynum'))+1
         error = systemintro.updatebyparams(systemintro,systemintro, update_dict)
         if error!=None:
@@ -463,8 +430,6 @@ def systemintro_thumbsup(request,id_):
 
 
 def systemintro_info(request,id_):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
 
@@ -479,7 +444,7 @@ def systemintro_info(request,id_):
         except:
             __browseClick__=None
 
-        if __browseClick__=="是"  and  "clicknum"  in systemintro.getallcolumn(systemintro,systemintro):
+        if __browseClick__=="yes"  and  "clicknum"  in systemintro.getallcolumn(systemintro,systemintro):
             try:
                 clicknum=int(data[0].get("clicknum",0))+1
             except:
@@ -502,14 +467,12 @@ def systemintro_detail(request,id_):
             msg['data']=data[0]
             if msg['data'].__contains__("reversetime"):
                 msg['data']['reversetime'] = msg['data']['reversetime'].strftime("%Y-%m-%d %H:%M:%S")
-
-        #浏览点击次数
         try:
             __browseClick__= systemintro.__browseClick__
         except:
             __browseClick__=None
 
-        if __browseClick__=="是"   and  "clicknum"  in systemintro.getallcolumn(systemintro,systemintro):
+        if __browseClick__=="yes"   and  "clicknum"  in systemintro.getallcolumn(systemintro,systemintro):
             try:
                 clicknum=int(data[0].get("clicknum",0))+1
             except:
@@ -524,8 +487,6 @@ def systemintro_detail(request,id_):
 
 
 def systemintro_update(request):
-    '''
-    '''
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code, "data": {}}
         req_dict = request.session.get("req_dict")
@@ -569,8 +530,6 @@ def systemintro_vote(request,id_):
 
     if request.method in ["POST", "GET"]:
         msg = {"code": normal_code, "msg": mes.normal_code}
-
-
         data= systemintro.getbyid(systemintro, systemintro, int(id_))
         for i in data:
             votenum=i.get('votenum')
@@ -605,7 +564,7 @@ def systemintro_importExcel(request):
                 
         else:
             msg = {
-                "msg": "文件类型错误",
+                "msg": "wrong",
                 "code": 500
             }
                 
@@ -614,7 +573,6 @@ def systemintro_importExcel(request):
 def systemintro_sendemail(request):
     if request.method in ["POST", "GET"]:
         req_dict = request.session.get("req_dict")
-
         code = random.sample(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], 4)
         to = []
         to.append(req_dict['email'])
@@ -625,13 +583,12 @@ def systemintro_sendemail(request):
         cursor.execute("insert into emailregistercode(email,role,code) values('"+req_dict['email']+"','用户','"+''.join(code)+"')")
 
         msg = {
-            "msg": "发送success",
+            "msg": "success",
             "code": 0
         }
 
         return JsonResponse(msg)
 
-# 推荐算法接口
 def systemintro_autoSort2(request):
     
     if request.method in ["POST", "GET"]:
@@ -670,13 +627,13 @@ def systemintro_value(request, xColumnName, yColumnName, timeStatType):
         
         where = ' where 1 = 1 '
         sql = ''
-        if timeStatType == '日':
+        if timeStatType == 'day':
             sql = "SELECT DATE_FORMAT({0}, '%Y-%m-%d') {0}, sum({1}) total FROM systemintro {2} GROUP BY DATE_FORMAT({0}, '%Y-%m-%d') LIMIT 10".format(xColumnName, yColumnName, where, '%Y-%m-%d')
 
-        if timeStatType == '月':
+        if timeStatType == 'month':
             sql = "SELECT DATE_FORMAT({0}, '%Y-%m') {0}, sum({1}) total FROM systemintro {2} GROUP BY DATE_FORMAT({0}, '%Y-%m') LIMIT 10".format(xColumnName, yColumnName, where, '%Y-%m')
 
-        if timeStatType == '年':
+        if timeStatType == 'year':
             sql = "SELECT DATE_FORMAT({0}, '%Y') {0}, sum({1}) total FROM systemintro {2} GROUP BY DATE_FORMAT({0}, '%Y') LIMIT 10".format(xColumnName, yColumnName, where, '%Y')
 
         func_name = sys._getframe().f_code.co_name
