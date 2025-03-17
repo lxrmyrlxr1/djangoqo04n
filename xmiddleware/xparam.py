@@ -11,7 +11,7 @@ class Xparam(MiddlewareMixin):
         if "/js/" not in fullPath and "/css/" not in fullPath and "/img/" not in fullPath and "/fonts/" not in fullPath and "/front/" not in fullPath:
             req_dict={}
 
-            #获取query的参数
+            #get query
             for k,v in request.GET.items():
                 req_dict[k]=v
 
@@ -19,7 +19,7 @@ class Xparam(MiddlewareMixin):
                 contentType=request.META.get('CONTENT_TYPE',"")
                 # print("contentType==================>",contentType)
                 if "json" in contentType:
-                    #解析application/json的参数,如果解析失败,提前返回报错20200925
+                    # Parse application / json, if resolution fails, early early error 20200925
                     try:
                         data_=json.loads(request.body)
                     except Exception as e:
@@ -33,10 +33,10 @@ class Xparam(MiddlewareMixin):
                         for k,v in data_.items():
                             req_dict[k] = v
                 else:
-                    # 获取formdata的参数
+                    # get form data
                     for k, v in request.POST.items():
                         req_dict[k] = v
-            #处理参数，去掉无用的和错误的参数
+            #Process the parameters, remove the useless and wrong parameters
             if req_dict.get("created")!=None:
                 req_dict['addtime']=copy.deepcopy(req_dict.get("created"))
                 del req_dict["created"]
