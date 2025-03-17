@@ -122,7 +122,6 @@ if __name__=='__main__':
     client_id = 'x20xOjtOsAtbQhm2WBuifuQw'  # ak
     client_secret = 'O7yMp2dmOnCtQtBokUt1gN6hgFCcLLcp'  # sk
 
-    # 本地pictureaddress，根据自己的picture conductRevise
     image1 = 'nude1.jpg'
     image2 = 'nude2.jpg'
 
