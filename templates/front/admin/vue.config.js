@@ -34,7 +34,7 @@ Hot: true, / / open hot more new
 The https: false, / / whether to open the https mode
 Proxy: {/ / Request proxy server
 '/ djangoqo04n': {/ / with an api prefix
-target: 'http://localhost:8080/djangoqo04n/', //代理目标address
+target: 'http://localhost:8080/djangoqo04n/', //address
 changeOrigin: true,
 secure: false,
 pathRewrite: {/ / Replace / api with '' null value after making the request, which does not affect the interface request
