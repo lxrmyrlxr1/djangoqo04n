@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 上传文件组件 -->
     <el-upload
       ref="upload"
       :action="getActionUrl"
@@ -30,11 +29,8 @@ import base from "@/utils/base";
 export default {
   data() {
     return {
-      // 查看大图
       dialogVisible: false,
-      // 查看大图
       dialogImageUrl: "",
-      // 组件渲染picture的数组字段，有特殊格式要求
       fileList: [],
       fileUrlList: [],
       myHeaders:{}
@@ -54,14 +50,12 @@ export default {
     }
   },
   computed: {
-    // 计算属性的 getter
     getActionUrl: function() {
       // return base.url + this.action + "?token=" + storage.get("token");
       return `/${this.$base.name}/` + this.action;
     }
   },
   methods: {
-    // 初始化
     init() {
       //   console.log(this.fileUrls);
       if (this.fileUrls) {
@@ -82,7 +76,6 @@ export default {
     handleBeforeUpload(file) {
 	
     },
-    // 上传文件success后执行
     handleUploadSuccess(res, file, fileList) {
       if (res && res.code === 0) {
         fileList[fileList.length - 1]["url"] = "upload/" + file.response.file;
@@ -92,29 +85,24 @@ export default {
         this.$message.error(res.msg);
       }
     },
-    // picture上传失败
     handleUploadErr(err, file, fileList) {
-      this.$message.error("文件上传失败");
+      this.$message.error("");
     },
-    // 移除picture
     handleRemove(file, fileList) {
       this.setFileList(fileList);
       this.$emit("change", this.fileUrlList.join(","));
     },
-    // 查看大图
+
     handleUploadPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    // 限制picture数量
     handleExceed(files, fileList) {
-      this.$message.warning(`最多上传${this.limit}张picture`);
+      this.$message.warning(`${this.limit}picture`);
     },
-    // 重new 对fileList conduct赋值
     setFileList(fileList) {
       var fileArray = [];
       var fileUrlArray = [];
-      // 有些picture不是公开的，所以需要携带token信息做权限校验
       var token = storage.get("token");
       let _this = this;
       fileList.forEach(function(item, index) {
