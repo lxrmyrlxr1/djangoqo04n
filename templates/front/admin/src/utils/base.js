@@ -3,7 +3,7 @@ const base = {
         return {
             url : "http://localhost:8080/djangoqo04n/",
             name: "djangoqo04n",
-            // 退出到首页链接
+       
             indexUrl: ''
         };
     },
