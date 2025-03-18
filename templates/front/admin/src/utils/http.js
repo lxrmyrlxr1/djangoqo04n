@@ -12,14 +12,14 @@ const http = axios.create({
 })
 
 http.interceptors.request.use(config => {
-    config.headers['Token'] = storage.get('Token') // 请求头带上token
+    config.headers['Token'] = storage.get('Token') // token
     return config
 }, error => {
     return Promise.reject(error)
 })
 
 http.interceptors.response.use(response => {
-    if (response.data && response.data.code === 401) { // 401, token失效
+    if (response.data && response.data.code === 401) { // 401, token
         router.push({ name: 'login' })
     }
     return response
