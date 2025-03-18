@@ -1,5 +1,5 @@
 /**
- * 邮箱
+ 
  * @param {*} s
  */
 export function isEmail (s) {
@@ -7,7 +7,7 @@ export function isEmail (s) {
 }
 
 /**
- * 手机号码
+
  * @param {*} s
  */
 export function isMobile (s) {
@@ -15,7 +15,7 @@ export function isMobile (s) {
 }
 
 /**
- * 电话号码
+
  * @param {*} s
  */
 export function isPhone (s) {
@@ -31,21 +31,21 @@ export function isURL (s) {
 }
 
 /**
- * 匹配数字，可以是小数，不可以是负数,可以为空
+
  * @param {*} s 
  */
 export function isNumber(s){
   return  /(^-?[+-]?([0-9]*\.?[0-9]+|[0-9]+\.?[0-9]*)([eE][+-]?[0-9]+)?$)|(^$)/.test(s);
 }
 /**
- * 匹配整数，可以为空
+ *
  * @param {*} s 
  */
 export function isIntNumer(s){
   return  /(^-?\d+$)|(^$)/.test(s);
 }
 /**
- * 身份证校验
+ 
  */
 export function checkIdCard(idcard) {
   const regIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
