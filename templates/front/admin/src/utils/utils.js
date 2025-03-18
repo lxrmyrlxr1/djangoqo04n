@@ -1,7 +1,6 @@
 import storage from './storage';
 import menu from './menu';
 /**
- * 是否有权限
  * @param {*} key
  */
 export function isAuth(tableName,key) {
@@ -36,7 +35,7 @@ export function isAuth(tableName,key) {
 }
 
 /**
- *  * 获取当前时间（yyyy-MM-dd hh:mm:ss）
+ *  * （yyyy-MM-dd hh:mm:ss）
  *   */
 export function getCurDateTime() {
     let currentTime = new Date(),
@@ -50,7 +49,7 @@ export function getCurDateTime() {
 }
 
 /**
- *  * 获取当前日期（yyyy-MM-dd）
+ *  * （yyyy-MM-dd）
  *   */
 export function getCurDate() {
     let currentTime = new Date(),
